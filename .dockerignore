@@ -1,0 +1,19 @@
+# Keep the backend build context small and free of local/runtime state.
+.git
+.github
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.env
+.env.*
+accounts.db
+*.db
+*.sqlite
+memory/
+tests/
+frontend/
+Plan/
+*.md
+!README.md
