@@ -1,0 +1,41 @@
+# Local container setup: FastAPI backend + nginx-served Vite frontend.
+#
+#   docker compose up --build
+#
+# Frontend: http://localhost:8080  (proxies /api to the backend service)
+# Backend:  http://localhost:8000
+#
+# Values are read from your shell / an optional .env file (compose loads it
+# automatically for substitution). Sensible dummy defaults let the stack boot
+# with the market simulator when no real keys are set.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-dummy-local}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      GROK_API_KEY: ${GROK_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      MASSIVE_API_KEY: ${MASSIVE_API_KEY:-}
+      TAVILY_API_KEY: ${TAVILY_API_KEY:-}
+      PUSHOVER_TOKEN: ${PUSHOVER_TOKEN:-}
+      PUSHOVER_USER: ${PUSHOVER_USER:-}
+    volumes:
+      - trader-data:/data
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  trader-data:
